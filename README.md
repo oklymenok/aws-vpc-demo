@@ -1,4 +1,9 @@
-# Design
+# VPC Design
+## Terminology
+* Private subnet - subnet that is connected to Internet Gateway (IGW)
+* Public subnet - subnets that are not connected to Internet Gateway and have access to the internet via NAT GW
+
+## Networking
 * 1x VPC across 2 AZ
 * 4x subnetx
   - 2x public subnet
@@ -7,11 +12,7 @@
 * 1x IGW ( for public subnets )
 * 1x NAT GW ( for private subnets )
 
-# Terminology
-* Private subnet - 
-* Public subnet - 
-
-# Subnets
+##  Subnets
 * 10.0.0.0/26 (VPC) - total 64 IPs
 ```
 2 ^ (32 - 26) = 2 ^ 6 = 64
@@ -21,5 +22,7 @@
 * 10.0.0.32/28 - private b
 * 10.0.0.48/28 - public b
 
-# VPN config
+# VPN config (TBD)
 client CIDR 172.16.0.0/22
+
+#
