@@ -1,9 +1,13 @@
+data "aws_key_pair" "default_ssh_key" {
+  key_name = local.ssh_key_name
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "18.30.1"
 
   cluster_name    = local.eks_cluster_name
-  cluster_version = "1.23"
+  cluster_version = local.kubernetes_version
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -48,14 +52,24 @@ module "eks" {
       ]
     },
     encrypted_ami = {
-      name = "t3-small-encrypted"
-      ami_id = "ami-0d3fca3d4aa81a80a"
+      name   = "t3-small-encrypted"
+      ami_id = aws_ami_copy.eks_worker_ami.id
 
       # This will ensure the boostrap user data is used to join the node
       # By default, EKS managed node groups will not append bootstrap script;
       # this adds it back in using the default template provided by the module
       # Note: this assumes the AMI provided is an EKS optimized AMI derivative
       enable_bootstrap_user_data = true
+
+      # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
+      # so we need to disable it to use the default template provided by the AWS EKS managed node group service
+      create_launch_template = false
+      launch_template_name   = ""
+
+      # Remote access cannot be specified with a launch template
+      remote_access = {
+        ec2_ssh_key = data.aws_key_pair.default_ssh_key.key_name
+      }
 
       instance_types = ["t3.small"]
 

@@ -17,3 +17,7 @@ output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = local.eks_cluster_name
 }
+
+output "aws_eks_ami_id" {
+  value = data.aws_ami.aws_eks_node_ami.id
+}
