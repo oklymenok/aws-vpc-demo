@@ -27,3 +27,18 @@
 # }
 
 # # AWS organization accounts
+
+# data "aws_identitystore_user" "example" {
+#   identity_store_id = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
+
+#   alternate_identifier {
+#     unique_attribute {
+#       attribute_path  = "UserName"
+#       attribute_value = "test_user_0"
+#     }
+#   }
+# }
+
+#output "user_id" {
+#   value = data.aws_identitystore_user.example.user_id
+#}

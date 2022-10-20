@@ -30,7 +30,7 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    one = {
+    default_ami = {
       name = "node-group-t3-small"
 
       instance_types = ["t3.small"]
@@ -41,6 +41,30 @@ module "eks" {
 
       pre_bootstrap_user_data = <<-EOT
       echo 'foo bar'
+      EOT
+
+      vpc_security_group_ids = [
+        aws_security_group.eks_worker_allow_ssh.id
+      ]
+    },
+    encrypted_ami = {
+      name = "t3-small-encrypted"
+      ami_id = "ami-0d3fca3d4aa81a80a"
+
+      # This will ensure the boostrap user data is used to join the node
+      # By default, EKS managed node groups will not append bootstrap script;
+      # this adds it back in using the default template provided by the module
+      # Note: this assumes the AMI provided is an EKS optimized AMI derivative
+      enable_bootstrap_user_data = true
+
+      instance_types = ["t3.small"]
+
+      min_size     = 1
+      max_size     = 3
+      desired_size = 1
+
+      pre_bootstrap_user_data = <<-EOT
+      echo 'lol worked'
       EOT
 
       vpc_security_group_ids = [
