@@ -90,5 +90,25 @@ module "eks" {
         aws_security_group.eks_worker_allow_ssh.id
       ]
     },
+    # These nodes will have a k8s label
+    # kubectl describe nodes/ip-10-10-10-25.ec2.internal | grep SPOT
+    #                 eks.amazonaws.com/capacityType=SPOT
+    spot_instances = {
+      name           = "spot-instances"
+      instance_types = ["t3.small"]
+
+      min_size     = 1
+      max_size     = 3
+      desired_size = 2
+
+      pre_bootstrap_user_data = <<-EOT
+      echo 'cheap nodes'
+      EOT
+
+      vpc_security_group_ids = [
+        aws_security_group.eks_worker_allow_ssh.id
+      ]
+      capacity_type = "SPOT"
+    },
   }
 }
