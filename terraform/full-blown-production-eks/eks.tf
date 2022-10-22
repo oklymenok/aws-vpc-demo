@@ -59,5 +59,22 @@ module "eks" {
       ]
       capacity_type = "SPOT"
     },
+    default_ami = {
+      name           = "node-group-t3-medium"
+      instance_types = ["t3.medium"]
+
+      min_size     = 1
+      max_size     = 3
+      desired_size = 2
+
+      pre_bootstrap_user_data = <<-EOT
+      echo 'foo bar'
+      EOT
+
+      vpc_security_group_ids = [
+        aws_security_group.eks_worker_allow_ssh.id
+      ]
+    },
+
   }
 }
