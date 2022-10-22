@@ -1,0 +1,51 @@
+locals {
+  sso_group_name = "Example_Group_0"
+  sso_user_name = "test_user_0"
+}
+
+# Get SSO instance and Identity group via lookup
+data "aws_ssoadmin_instances" "this" {}
+
+output "sso_instance_ids" {
+  value = data.aws_ssoadmin_instances.this.identity_store_ids
+}
+
+output "sso_isntance_arns" {
+  value = data.aws_ssoadmin_instances.this.arns
+}
+
+# Get SSO identity store groups
+data "aws_identitystore_group" "this" {
+  identity_store_id = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
+  filter {
+    attribute_path  = "DisplayName"
+    attribute_value = local.sso_group_name
+  }
+}
+
+output "aws_identitystore_group" {
+  value = data.aws_identitystore_group.this.group_id
+}
+
+# AWS organization accounts
+
+data "aws_identitystore_user" "example" {
+  identity_store_id = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
+
+  alternate_identifier {
+    unique_attribute {
+      attribute_path  = "UserName"
+      attribute_value = "test_user_0"
+    }
+  }
+}
+
+output "user_id" {
+  value = data.aws_identitystore_user.example
+}
+
+data "aws_organizations_organization" "this" {}
+
+output "ORG_users" {
+  value = data.aws_organizations_organization.this.accounts
+}
