@@ -1,7 +1,3 @@
-data "aws_key_pair" "default_ssh_key" {
-  key_name = local.ssh_key_name
-}
-
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "18.30.1"
@@ -36,7 +32,7 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    spot_instances = {
+    spot = {
       name = "spot-instances"
       instance_types = [
         "t2.micro",
@@ -59,7 +55,7 @@ module "eks" {
       ]
       capacity_type = "SPOT"
     },
-    default_ami = {
+    on_demand = {
       name           = "node-group-t3-medium"
       instance_types = ["t3.medium"]
 
@@ -68,13 +64,12 @@ module "eks" {
       desired_size = 2
 
       pre_bootstrap_user_data = <<-EOT
-      echo 'foo bar'
+      echo 'not cheap nodes'
       EOT
 
       vpc_security_group_ids = [
         aws_security_group.eks_worker_allow_ssh.id
       ]
     },
-
   }
 }

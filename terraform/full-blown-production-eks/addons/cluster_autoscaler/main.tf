@@ -1,3 +1,9 @@
+locals {
+    labels = {
+        k8s-addon = "cluster-autoscaler.addons.k8s.io"
+        k8s-app = "cluster-autoscaler"
+    }
+}
 data "aws_caller_identity" "current" {}
 
 locals {
@@ -71,3 +77,12 @@ resource "aws_iam_role" "cluster_autoscaler_role" {
     ]
 }
 
+# Kubernetes resources
+
+resource "kubernetes_secret_v1" "cluster_autoscaler_sa" {
+  metadata {
+    name = "terraform-example"
+    namespace = "${var.autoscaler_namespace}"
+    labels = local.labels
+  }
+}
