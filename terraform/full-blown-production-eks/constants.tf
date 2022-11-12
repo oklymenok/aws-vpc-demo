@@ -10,7 +10,7 @@ locals {
   ca_namespace       = "kube-system"
   ca_service_account = "cluster-autoscaler"
 
-  enable_php_app     = true
+  enable_php_app = true
 }
 
 data "aws_caller_identity" "current" {}

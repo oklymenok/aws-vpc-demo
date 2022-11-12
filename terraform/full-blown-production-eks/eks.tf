@@ -71,5 +71,21 @@ module "eks" {
         aws_security_group.eks_worker_allow_ssh.id
       ]
     },
+    # on_demand_t3_xlarge = {
+    #   name           = "node-group-t3-xlarge"
+    #   instance_types = ["t3.xlarge"]
+
+    #   min_size     = 1
+    #   max_size     = 5
+    #   desired_size = 3
+
+    #   pre_bootstrap_user_data = <<-EOT
+    #   echo 'actually expensive nodes'
+    #   EOT
+
+    #   vpc_security_group_ids = [
+    #     aws_security_group.eks_worker_allow_ssh.id
+    #   ]
+    # },
   }
 }

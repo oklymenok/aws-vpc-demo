@@ -7,6 +7,52 @@
 * Separate POD subnet
 * DNS zone and HTTPs
 
+# Deployment steps
+## Deploy VPC and EKS cluster first:
+```
+terraform apply -target=module.vpc -target=module.eks
+```
+## Deploy addons
+* Deploy addons and the rest when EKS is ready
+```
+terraform apply
+```
+## Deploy ArgoCD
+
+* The https://argo-cd.readthedocs.io/en/stable/getting_started/
+
+* Install
+```
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+* OPTIONAL: Expose ArgoCD UI
+```
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+```
+
+* Setup port-forwarding
+```
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
+
+* The API server can then be accessed using https://localhost:8080
+
+# Setup datadog:
+
+* Update keys:
+```
+argocd app set datadog -p  datadog.site='datadoghq.com' -p datadog.apiKey='*********************'
+```
+
+# Tearing down the environment
+
+* Destroy the addons first:
+```
+terraform destroy -target=module.addons
+```
+
 # Getting Access to the cluster
 ```
 aws eks --region us-east-1 update-kubeconfig --name $(terraform output -raw cluster_name)
