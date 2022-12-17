@@ -19,18 +19,19 @@ resource "aws_eip" "web-server-eip" {
 
 # Create Ubuntu server
 resource "aws_instance" "web-server-instance" {
-  count             = local.web_server_enable ? 1 : 0
-  ami               = data.aws_ami.ubuntu_server_ami.id
-  instance_type     = "t2.micro"
-  availability_zone = "us-east-1a"
-  key_name          = "default"
+  count                = local.web_server_enable ? 1 : 0
+  ami                  = data.aws_ami.ubuntu_server_ami.id
+  instance_type        = "t2.micro"
+  availability_zone    = "us-east-1a"
+  key_name             = "default"
+  iam_instance_profile = aws_iam_instance_profile.aws_ssm_profile.name
 
   network_interface {
     device_index         = 0
     network_interface_id = aws_network_interface.web-server-nic.id
   }
 
-    user_data = <<-EOF
+  user_data = <<-EOF
                   #!/bin/bash
                   sudo apt update -y
                   sudo apt install apache2 -y
