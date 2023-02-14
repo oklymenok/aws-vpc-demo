@@ -19,4 +19,5 @@ module "addons" {
   enable_ebs_csi = local.enable_ebs_csi
 
   enable_prometheus = local.enable_prometheus
+  enable_grafana    = local.enable_grafana
 }

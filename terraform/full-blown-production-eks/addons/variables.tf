@@ -62,3 +62,10 @@ variable "enable_prometheus" {
   type        = bool
   default     = false
 }
+
+# Grafana Dashboard
+variable "enable_grafana" {
+  description = "Enable Grafana"
+  type        = bool
+  default     = false
+}

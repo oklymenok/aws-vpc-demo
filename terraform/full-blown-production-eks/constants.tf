@@ -18,6 +18,8 @@ locals {
 
   # Collecting metrics
   enable_prometheus = true
+
+  enable_grafana = true
 }
 
 data "aws_caller_identity" "current" {}

@@ -23,3 +23,8 @@ module "prometheus" {
   count  = var.enable_prometheus ? 1 : 0
   source = "./prometheus"
 }
+
+module "grafana" {
+  count  = var.enable_grafana ? 1 : 0
+  source = "./grafana"
+}
