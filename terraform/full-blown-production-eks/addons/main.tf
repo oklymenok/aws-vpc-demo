@@ -11,3 +11,15 @@ module "php_app" {
   namespace = "php-apache"
   create_lb = true
 }
+
+module "ebs_csi" {
+  count             = var.enable_ebs_csi ? 1 : 0
+  source            = "./ebs-csi"
+  oidc_provider     = var.oidc_provider
+  oidc_provider_arn = var.oidc_provider_arn
+}
+
+module "prometheus" {
+  count  = var.enable_prometheus ? 1 : 0
+  source = "./prometheus"
+}

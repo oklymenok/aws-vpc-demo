@@ -5,12 +5,19 @@ locals {
   ssh_key_name       = "default"
   region             = "us-east-1"
 
-  # Addons
-  enable_ca          = true # enable Cluster Auto Scaler
+  # Cluster autoscaller addon
+  enable_ca          = true
   ca_namespace       = "kube-system"
   ca_service_account = "cluster-autoscaler"
 
-  enable_php_app = true
+  # Simple test php application addon
+  enable_php_app = false
+
+  # EBS CSI driver addon. Required for persistent storage in EKS
+  enable_ebs_csi = true
+
+  # Collecting metrics
+  enable_prometheus = true
 }
 
 data "aws_caller_identity" "current" {}

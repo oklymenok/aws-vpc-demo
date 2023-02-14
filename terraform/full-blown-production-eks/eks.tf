@@ -10,7 +10,7 @@ module "eks" {
 
   enable_irsa = true
 
-  #  Disable additiona nodes security group or we will run into this:
+  #  Disable additional nodes security group or we will run into this:
   # 
   #   Events:
   #   Type     Reason                  Age               From                Message

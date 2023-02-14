@@ -14,4 +14,9 @@ module "addons" {
 
   # Enable demo php app
   enable_php_app = local.enable_php_app
+
+  # Enable EBS CSI Driver
+  enable_ebs_csi = local.enable_ebs_csi
+
+  enable_prometheus = local.enable_prometheus
 }

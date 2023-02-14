@@ -48,3 +48,17 @@ variable "enable_php_app" {
   type        = bool
   default     = false
 }
+
+# EBS CSI driver
+variable "enable_ebs_csi" {
+  description = "Enable EBS CSI driver"
+  type        = bool
+  default     = false
+}
+
+# Prometheus server
+variable "enable_prometheus" {
+  description = "Enable Prometheus"
+  type        = bool
+  default     = false
+}

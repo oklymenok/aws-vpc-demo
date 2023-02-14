@@ -65,9 +65,12 @@ aws eks --region us-east-1 update-kubeconfig --name $(terraform output -raw clus
 
 # Cluster size consideration
 
-You can find spot instance pricing on AWS’s [spot instance pricing page](https://aws.amazon.com/ec2/spot/pricing/) as well as on the [spot instance advisor page](https://aws.amazon.com/ec2/spot/instance-advisor/). This will help you determine the savings you can achieve in comparison to EC2 pricing on demand. 
+You can find spot instance pricing on AWS’s [spot instance pricing page](https://aws.amazon.com/ec2/spot/pricing/) as well as on the [spot instance advisor page](https://aws.amazon.com/ec2/spot/instance-advisor/). This will help you determine the savings you can achieve in comparison to EC2 pricing on demand.
 
 # Additional Components
+## Functional
+* [EBS CSI Driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)
+* [EFS CSI Driver](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html)
 ## Scaling
 * [Cluster Autoscaler](https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html#cluster-autoscaler) - required to make sure that cluster has enough capacity all pods can be scheduled
 * [Kubernetes Metrics Server](https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html) - required for HPA (Kubernetes Horizontal Autoscaler)
@@ -78,3 +81,7 @@ You can find spot instance pricing on AWS’s [spot instance pricing page](https
 ## Monitoring
 * [Prometheus]
 * [Grafana]
+
+# TODO
+
+* Add KMS key and enable encruption for EBS volumes for EKS pvc resources
